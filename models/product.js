@@ -3,35 +3,33 @@ const path = require('path');
 const fs = require('fs');
 const products = [];
 
+const p = path.join(rootDir, 'data','products.json');
+
+const getDataFromFile = (callback) => {
+    fs.readFile(p,(err, fileContent) => {
+        if (err){
+            return callback([])
+        }
+        callback(JSON.parse(fileContent));
+    } );
+}
+
 module.exports = class Product{
     constructor(title){
         this.title = title;
     }
 
     save(){
-        const p = path.join(rootDir, 'data','products.json');
-        fs.readFile(p, (err, fileContent) => {
-            let products = [];
-            if (!err){
-                products = JSON.parse(fileContent);
-            }
+        getDataFromFile((products) => {
             products.push(this);
             fs.writeFile(p, JSON.stringify(products), (err) =>{
                 console.log(err);
             })
         })
-
-        products.push(this);
     }
 
     static fetchAll(callback){
-        const p = path.join(rootDir, 'data','products.json');
-        fs.readFile(p,(err, fileContent) => {
-            if (err){
-                callback([])
-            }
-            callback(JSON.parse(fileContent));
-        } );
+        getDataFromFile(callback);
     }
 }
 
