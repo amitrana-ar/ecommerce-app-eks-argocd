@@ -30,4 +30,17 @@ module.exports = class Cart{
             })
         })
     }
+
+    static deleteProduct(id, productPrice){
+        fs.readFile(p, (error, fileContent) => {
+            if (error) {return;}
+            const updatedCart = {...JSON.parse(fileContent)};
+            const product = updatedCart.products.find(p => p.id === id);
+            updatedCart.products = updatedCart.products.filter(p => p.id !== id);
+            updatedCart.totalPrice = updatedCart.totalPrice - productPrice * product.qty;
+            fs.writeFile(p, JSON.stringify(updatedCart), error => {
+                console.log('Error at Cart model, deleteProduct {}', error);
+            });
+        });
+    };
 }
