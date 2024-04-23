@@ -26,7 +26,7 @@ module.exports = class Cart{
             }
             cart.totalPrice += +price;
             fs.writeFile(p, JSON.stringify(cart), error => {
-                console.log(error);
+                console.log('Error at cart model, addProduct:{}', error);
             })
         })
     }
@@ -36,11 +36,25 @@ module.exports = class Cart{
             if (error) {return;}
             const updatedCart = {...JSON.parse(fileContent)};
             const product = updatedCart.products.find(p => p.id === id);
+            if (!product){return;}
+            const productQty = product.qty;
             updatedCart.products = updatedCart.products.filter(p => p.id !== id);
-            updatedCart.totalPrice = updatedCart.totalPrice - productPrice * product.qty;
+            updatedCart.totalPrice = updatedCart.totalPrice - productPrice * productQty;
             fs.writeFile(p, JSON.stringify(updatedCart), error => {
                 console.log('Error at Cart model, deleteProduct {}', error);
             });
         });
     };
+
+    static getCart(callback){
+        fs.readFile(p, (error, fileContent) => {
+            const cart = JSON.parse(fileContent);
+            if (error){
+                callback(null);
+            }
+            else{
+                callback(cart);
+            }
+        })
+    }
 }
