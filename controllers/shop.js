@@ -5,19 +5,19 @@ const ERROR_PREFIX = 'In shop controller, '
 
 exports.getProducts = (req, res, next) => {
 
-    Product.fetchAll()
-    .then(([rows]) => {
-      res.render('shop/product-list', {
-        prods: rows,
-        pageTitle: 'Products List',
-        path: '/shop/product-list',
-        hasProducts: rows.length > 0,
-      });
-    })
-    .catch( error => {
-      console.log('In shop controller, fetchAll: {}', error)
-    }
-    )
+    Product.findAll()
+            .then(products => {
+              res.render('shop/product-list', {
+                prods: products,
+                pageTitle: 'Products List',
+                path: '/shop/product-list',
+                hasProducts: products.length > 0,
+              });
+            })
+            .catch(error => {
+              console.log('In shop controller, fetchAll: {}', error)
+            }
+            );
   }
 
 exports.getProduct = (req, res, next) => {
@@ -35,19 +35,20 @@ exports.getProduct = (req, res, next) => {
 
 exports.getIndex = (req, res, next) => {
 
-  Product.fetchAll()
-          .then(([rows, fields]) => {
-            res.render('shop/index', {
-              prods: rows,
-              pageTitle: 'Shop',
-              path: '/',
-              hasProducts: rows.length > 0,
-            });
-          })
-          .catch( error => {
-            console.log('In shop controller, fetchAll: {}', error)
-          }
-          )
+  Product.findAll().then(
+    (products) => {
+      res.render('shop/index', {
+        prods: products,
+        pageTitle: 'Shop',
+        path: '/',
+        hasProducts: products.length > 0,
+      });
+    })
+    .catch(
+      error => {
+        console.log('In shop controller, fetchAll: {}', error)
+      }
+    )
   };
 
 exports.getCart = (req, res, next) => {

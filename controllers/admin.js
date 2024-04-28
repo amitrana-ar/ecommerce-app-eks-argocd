@@ -32,10 +32,17 @@ exports.postAddProduct = (req, res, next) => {
     const imageUrl = req.body.imageUrl;
     const description = req.body.description;
     const price = req.body.price;
-    const product = new Product(null, title, imageUrl, description, price );
-    product.save()
-            .then(() => { res.redirect('/');})
-            .catch(error => console.log('error in admin controller, postAddProduct, {}', error));
+    Product.create({
+      title: title,
+      price: price,
+      imageUrl: imageUrl,
+      description: description
+    }).then(result => {
+      console.log('Product Created')
+    }
+    ).catch(error => {
+       console.log('Error in Admin Controller, postAddProduct: {}', error)
+    })
    
   };
 
