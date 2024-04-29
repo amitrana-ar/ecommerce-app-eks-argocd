@@ -206,3 +206,11 @@ form {
     display: none;
   }
 }
+
+.image{
+  height: 20rem;
+}
+
+.image img{
+  height: 100%;
+}
