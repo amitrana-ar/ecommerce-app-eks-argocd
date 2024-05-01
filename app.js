@@ -5,6 +5,8 @@ const Product = require("./models/product");
 const User = require("./models/user");
 const Cart = require("./models/cart");
 const CartItem = require("./models/cart-item");
+const Order = require("./models/order");
+const OrderItem = require("./models/order-item");
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -41,11 +43,19 @@ app.use(errorController.get404);
 Product.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
 User.hasMany(Product);
 
+// One direction is enough
 User.hasOne(Cart);
 Cart.belongsTo(User);
 
+// One direction is enough
 Cart.belongsToMany(Product, { through: CartItem })
-Product.belongsToMany(Cart, {through: CartItem})
+Product.belongsToMany(Cart, { through: CartItem })
+
+// One direction is enough
+Order.belongsTo(User);
+User.hasMany(Order);
+
+Order.belongsToMany(Product, {through: OrderItem})
 
 sequelize
   // .sync({ force: true })
