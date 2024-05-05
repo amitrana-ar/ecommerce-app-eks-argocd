@@ -1,4 +1,6 @@
 const path = require("path");
+const fs = require('fs');
+
 const errorController = require("./controllers/error");
 const sequelize = require("./util/database");
 const Product = require("./models/product");
@@ -7,6 +9,9 @@ const Cart = require("./models/cart");
 const CartItem = require("./models/cart-item");
 const Order = require("./models/order");
 const OrderItem = require("./models/order-item");
+// const helmet = require('helmet');
+const compression = require('compression');
+const morgan = require('morgan');
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -18,7 +23,13 @@ app.set("views", "views");
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
-const { name } = require("ejs");
+
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'})
+
+// app.use(helmet());
+app.use(compression());
+app.use(morgan('combined', {stream: accessLogStream}));
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -73,6 +84,6 @@ sequelize
     return user.createCart();
   })
   .then(cart => { 
-    app.listen(3000);
+    app.listen(process.env.PORT || 3000);
   })
   .catch((error) => console.log("APP error, {}", error));
