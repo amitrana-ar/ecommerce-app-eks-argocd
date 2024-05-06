@@ -1,11 +1,11 @@
-const Product = require('../models/product');
+const Product = require("../models/product");
 
 exports.getAddProduct = (req, res, next) => {
-    res.render('admin/edit-product', {
-      pageTitle: 'Add Product',
-      path: '/admin/add-product',
-      editing: false
-    });
+  res.render("admin/edit-product", {
+    pageTitle: "Add Product",
+    path: "/admin/add-product",
+    editing: false,
+  });
 };
 
 exports.getEditProduct = (req, res, next) => {
@@ -14,54 +14,91 @@ exports.getEditProduct = (req, res, next) => {
   //   return res.redirect('/')
   // }
   const productId = req.params.productId;
-  Product.findById(productId, product => {
-    if (!product){
-      return res.redirect('/')
-    }
-    res.render('admin/edit-product', {
-      pageTitle: 'Add Product',
-      path: '/admin/edit-product',
-      editing: true,
-      product: product
+  req.user.getProducts({ where: {id: productId} })
+    .then((products) => {
+      const product = products[0];
+      if (!product) {
+        return res.redirect("/");
+      }
+      res.render("admin/edit-product", {
+        pageTitle: "Add Product",
+        path: "/admin/edit-product",
+        editing: true,
+        product: product,
+      });
+    })
+    .catch((error) => {
+      console.log("Error in Admin Controller, getEditProduct: {}", error);
     });
-  })
 };
 
 exports.postAddProduct = (req, res, next) => {
-    const title = req.body.title;
-    const imageUrl = req.body.imageUrl;
-    const description = req.body.description;
-    const price = req.body.price;
-    const product = new Product(null, title, imageUrl, description, price );
-    product.save();
-    res.redirect('/');
-  };
-
-exports.postEditProduct = (req, res, next) => {
-  const id = req.body.productId;
   const title = req.body.title;
   const imageUrl = req.body.imageUrl;
   const description = req.body.description;
   const price = req.body.price;
-  const updatedProduct = new Product(id, title, imageUrl, description, price );
-  updatedProduct.save();
-  res.redirect('/admin/product-list');
+  req.user
+    .createProduct({
+      title: title,
+      price: price,
+      imageUrl: imageUrl,
+      description: description,
+    })
+    .then((result) => {
+      console.log("Product Created");
+      res.redirect("/admin/product-list");
+    })
+    .catch((error) => {
+      console.log("Error in Admin Controller, postAddProduct: {}", error);
+    });
+};
+
+exports.postEditProduct = (req, res, next) => {
+  const id = req.body.productId;
+
+  Product.findByPk(id)
+    .then((product) => {
+      product.title = req.body.title;
+      product.imageUrl = req.body.imageUrl;
+      product.description = req.body.description;
+      product.price = req.body.price;
+      return product.save();
+    })
+    .then((result) => {
+      console.log("Product updated successfully");
+      res.redirect("/admin/product-list");
+    })
+    .catch((error) =>
+      console.log("Error in Admin Controller, postEditProduct: {}", error)
+    );
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render('admin/product-list', {
-      pageTitle: 'Admin Products',
-      path: '/admin/product-list',
-      prods: products,
-      hasProducts: products.length > 0,
-  })
-  })
+  req.user.getProducts()
+    .then((products) => {
+      res.render("admin/product-list", {
+        pageTitle: "Admin Products",
+        path: "/admin/product-list",
+        prods: products,
+        hasProducts: products.length > 0,
+      });
+    })
+    .catch((error) =>
+      console.log("Error in Admin Controller, getProducts: {}", error)
+    );
 };
 
 exports.deleteProduct = (req, res, next) => {
-    const productId = req.body.productId;
-    Product.deleteById(productId);
-    res.redirect('/admin/product-list');
+  const productId = req.body.productId;
+  Product.findByPk(productId)
+    .then((product) => {
+      product.destroy();
+    })
+    .then((result) => {
+      (result) => console.log("destroyed successfully", result);
+      res.redirect("/admin/product-list");
+    })
+    .catch((error) =>
+      console.log("Error in Admin Controller, deleteProduct: {}", error)
+    );
 };
-
