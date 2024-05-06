@@ -2,7 +2,7 @@ name: CICD
 
 on:
   push:
-    branches: [deployment]
+    branches: [main]
 
 jobs:
   build-and-deploy:
