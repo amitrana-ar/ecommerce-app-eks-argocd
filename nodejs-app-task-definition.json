@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-1:891376976800:task-definition/nodejs-app-task-definition:1",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:891376976800:task-definition/nodejs-app-task-definition:5",
     "containerDefinitions": [
         {
             "name": "nodejs-app",
@@ -15,11 +15,30 @@
                 }
             ],
             "essential": true,
-            "environment": [],
-            "environmentFiles": [],
+            "environment": [
+                {
+                    "name": "DB_USER_PASSWORD",
+                    "value": "Tc8zUpzdjoWy5kdgvw3j"
+                },
+                {
+                    "name": "DB_HOST_URL",
+                    "value": "mysql-database-1.c34aemui83k2.us-east-1.rds.amazonaws.com"
+                },
+                {
+                    "name": "PORT",
+                    "value": "5000"
+                },
+                {
+                    "name": "DB_USER_NAME",
+                    "value": "admin"
+                },
+                {
+                    "name": "DB_SCHEMA_NAME",
+                    "value": "node-store"
+                }
+            ],
             "mountPoints": [],
             "volumesFrom": [],
-            "ulimits": [],
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
@@ -35,7 +54,7 @@
     ],
     "family": "nodejs-app-task-definition",
     "executionRoleArn": "arn:aws:iam::891376976800:role/ecsTaskExecutionRole",
-    "revision": 1,
+    "revision": 5,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -55,9 +74,6 @@
             "name": "ecs.capability.execution-role-ecr-pull"
         },
         {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-        },
-        {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
         }
     ],
@@ -74,7 +90,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-05-05T11:24:44.776Z",
+    "registeredAt": "2024-05-06T12:07:41.986Z",
     "registeredBy": "arn:aws:iam::891376976800:user/lahiru_admin",
     "tags": []
-}
+  }
