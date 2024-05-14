@@ -84,6 +84,6 @@ sequelize
     return user.createCart();
   })
   .then(cart => { 
-    app.listen(process.env.PORT || 80);
+    app.listen(process.env.PORT || 5000);
   })
   .catch((error) => console.log("APP error, {}", error));
