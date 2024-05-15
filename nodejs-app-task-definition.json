@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-1:891376976800:task-definition/nodejs-app-task-definition:5",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:891376976800:task-definition/nodejs-app-task-definition:11",
     "containerDefinitions": [
         {
             "name": "nodejs-app",
@@ -46,15 +46,14 @@
                     "awslogs-group": "/ecs/nodejs-app-task-definition",
                     "awslogs-region": "us-east-1",
                     "awslogs-stream-prefix": "ecs"
-                },
-                "secretOptions": []
+                }
             },
             "systemControls": []
         }
     ],
     "family": "nodejs-app-task-definition",
     "executionRoleArn": "arn:aws:iam::891376976800:role/ecsTaskExecutionRole",
-    "revision": 5,
+    "revision": 11,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -90,7 +89,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-05-06T12:07:41.986Z",
+    "registeredAt": "2024-05-14T18:08:45.839Z",
     "registeredBy": "arn:aws:iam::891376976800:user/lahiru_admin",
     "tags": []
-  }
+}
