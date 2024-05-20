@@ -4,5 +4,5 @@ COPY package.json ./
 RUN npm install
 RUN echo "npm install completed successfully!"
 COPY . .
-EXPOSE 5000
+EXPOSE 80
 CMD ["npm","run","start"]
