@@ -5,9 +5,12 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js",
-    "start-server": "node app.js",
-    "start:dev": "nodemon app.js"
+    "start": "node frontend.js",
+    "start:frontend": "node frontend.js",
+    "start:product": "node product-service.js",
+    "start:cart": "node cart-service.js",
+    "start:order": "node order-service.js",
+    "start:dev": "nodemon frontend.js"
   },
   "author": "Maximilian Schwarzmüller",
   "license": "ISC",

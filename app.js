@@ -82,9 +82,46 @@ sequelize
     return user;
   })
   .then((user) => {
-    return user.createCart();
+    return user.getCart().then((cart) => {
+      if (!cart) {
+        return user.createCart();
+      }
+      return cart;
+    }).then(() => {
+      return Product.findAll();
+    }).then((products) => {
+      if (products.length > 0) {
+        return;
+      }
+      return Promise.all([
+        User.findByPk(1).then((seedUser) =>
+          seedUser.createProduct({
+            title: "Sample Book",
+            price: 19.99,
+            imageUrl: "https://placeimg.com/640/480/tech",
+            description: "A starter product for the shop.",
+          })
+        ),
+        User.findByPk(1).then((seedUser) =>
+          seedUser.createProduct({
+            title: "Sample Gadget",
+            price: 29.99,
+            imageUrl: "https://placeimg.com/640/480/gadget",
+            description: "A demo product to display in the shop.",
+          })
+        ),
+        User.findByPk(1).then((seedUser) =>
+          seedUser.createProduct({
+            title: "Sample Accessory",
+            price: 12.99,
+            imageUrl: "https://placeimg.com/640/480/fashion",
+            description: "A sample accessory item for the store.",
+          })
+        ),
+      ]);
+    });
   })
-  .then(cart => { 
+  .then(() => {
     app.listen(process.env.PORT || 5000);
   })
   .catch((error) => console.log("APP error, {}", error));

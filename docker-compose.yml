@@ -1,0 +1,91 @@
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: ecommerce
+      MYSQL_USER: ecommerce_user
+      MYSQL_PASSWORD: ecommerce_password
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+      - product-service
+      - cart-service
+      - order-service
+    ports:
+      - "5000:5000"
+    environment:
+      FRONTEND_PORT: 5000
+      PRODUCT_API_URL: http://product-service:5001
+      CART_API_URL: http://cart-service:5002
+      ORDER_API_URL: http://order-service:5003
+    command: ["npm", "run", "start:frontend"]
+    restart: unless-stopped
+
+  product-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "5001:5001"
+    environment:
+      PRODUCT_PORT: 5001
+      DB_SCHEMA_NAME: ecommerce
+      DB_USER_NAME: ecommerce_user
+      DB_USER_PASSWORD: ecommerce_password
+      DB_HOST_URL: db
+    command: ["npm", "run", "start:product"]
+    restart: unless-stopped
+
+  cart-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "5002:5002"
+    environment:
+      CART_PORT: 5002
+      DB_SCHEMA_NAME: ecommerce
+      DB_USER_NAME: ecommerce_user
+      DB_USER_PASSWORD: ecommerce_password
+      DB_HOST_URL: db
+    command: ["npm", "run", "start:cart"]
+    restart: unless-stopped
+
+  order-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "5003:5003"
+    environment:
+      ORDER_PORT: 5003
+      DB_SCHEMA_NAME: ecommerce
+      DB_USER_NAME: ecommerce_user
+      DB_USER_PASSWORD: ecommerce_password
+      DB_HOST_URL: db
+    command: ["npm", "run", "start:order"]
+    restart: unless-stopped
+
+volumes:
+  db_data: {}
