@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-frontend-deployment
+  labels:
+    app: ecommerce-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ecommerce-frontend
+  template:
+    metadata:
+      labels:
+        app: ecommerce-frontend
+    spec:
+      imagePullSecrets:
+        - name: ecr-secret
+      containers:
+        - name: ecommerce-frontend
+          image: <aws-account-id>.dkr.ecr.us-east-1.amazonaws.com/ecommerce-frontend:latest
+          command: ["npm", "run", "start:frontend"]
+          ports:
+            - containerPort: 5000          
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+            requests:
+              cpu: "250m"
+              memory: "128Mi"
+          env:
+            - name: PRODUCT_API_URL
+              value: "http://ecommerce-backend-product-service"
+            - name: CART_API_URL
+              value: "http://ecommerce-backend-cart-service"
+            - name: ORDER_API_URL
+              value: "http://ecommerce-backend-order-service"
+              

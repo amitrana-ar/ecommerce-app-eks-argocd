@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: ecommerce-backend-product-service
+  labels:
+    app: backend-product
+spec:
+  type: LoadBalancer
+  selector:
+    app: backend-product
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5001

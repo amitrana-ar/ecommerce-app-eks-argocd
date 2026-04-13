@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: ecommerce-backend-order-service
+  labels:
+    app: backend-order
+spec:
+  type: LoadBalancer
+  selector:
+    app: backend-order
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5003

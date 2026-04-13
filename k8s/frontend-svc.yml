@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: ecommerce-frontend-service
+  labels:
+    app: ecommerce-frontend
+spec:
+  type: LoadBalancer
+  selector:
+    app: ecommerce-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000  

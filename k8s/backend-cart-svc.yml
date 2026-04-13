@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: ecommerce-backend-cart-service
+  labels:
+    app: backend-cart
+spec:
+  type: LoadBalancer
+  selector:
+    app: backend-cart
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5002  

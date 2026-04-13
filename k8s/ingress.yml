@@ -1,0 +1,42 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ecommerce-ingress
+  labels:
+    app.kubernetes.io/name: ecommerce-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - path: "/"
+        pathType: Prefix
+        backend:
+          service:
+            name: ecommerce-frontend-service
+            port:
+              number: 80
+      - path: "/api/products"
+        pathType: Prefix
+        backend:
+          service:
+            name: ecommerce-backend-product-service
+            port:
+              number: 80
+      - path: "/api/orders"
+        pathType: Prefix
+        backend:
+          service:
+            name: ecommerce-backend-order-service
+            port:
+              number: 80
+      - path: "/api/cart"
+        pathType: Prefix
+        backend:
+          service:
+            name: ecommerce-backend-cart-service
+            port:
+              number: 80
+
+
