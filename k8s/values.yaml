@@ -1,3 +1,10 @@
+cluster:
+  name: ecommerce-cluster
+
+collector:
+  prometheus:
+    enabled: true
+
 prometheus:
   prometheusSpec:
     storageSpec:

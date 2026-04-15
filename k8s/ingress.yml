@@ -4,10 +4,16 @@ metadata:
   name: ecommerce-ingress
   labels:
     app.kubernetes.io/name: ecommerce-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - staging.artechworld.info
+    secretName: ecommerce-tls
   rules:
-  - host: localhost
+  - host: staging.artechworld.info
     http:
       paths:
       - path: "/"

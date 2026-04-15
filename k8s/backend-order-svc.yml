@@ -5,7 +5,7 @@ metadata:
   labels:
     app: backend-order
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: backend-order
   ports:

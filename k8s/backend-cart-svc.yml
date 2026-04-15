@@ -5,7 +5,7 @@ metadata:
   labels:
     app: backend-cart
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: backend-cart
   ports:

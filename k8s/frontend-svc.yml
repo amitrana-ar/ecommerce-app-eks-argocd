@@ -5,7 +5,7 @@ metadata:
   labels:
     app: ecommerce-frontend
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: ecommerce-frontend
   ports:
