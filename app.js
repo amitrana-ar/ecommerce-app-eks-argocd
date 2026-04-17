@@ -110,6 +110,14 @@ sequelize
             description: "A demo product to display in the shop.",
           })
         ),
+                User.findByPk(1).then((seedUser) =>
+          seedUser.createProduct({
+            title: "Sample Jwelery",
+            price: 29.99,
+            imageUrl: "https://placeimg.com/640/480/gadget",
+            description: "A demo product to display in the shop.",
+          })
+        ),
         User.findByPk(1).then((seedUser) =>
           seedUser.createProduct({
             title: "Sample Accessory",
