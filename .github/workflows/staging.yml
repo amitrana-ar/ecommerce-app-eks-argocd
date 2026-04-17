@@ -1,0 +1,72 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REGISTRY: <aws-account-id>.dkr.ecr.us-east-1.amazonaws.com
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          region: ${{ env.AWS_REGION }}
+
+      - name: Login to ECR
+        run: |
+          aws ecr get-login-password --region $AWS_REGION \
+          | docker login --username AWS --password-stdin $ECR_REGISTRY
+
+      # 🔹 Build & Push Cart
+      - name: Build & Push Cart
+        run: |
+          docker build -t ecommerce-cart .
+          docker tag ecommerce-cart:latest $ECR_REGISTRY/ecommerce-cart:latest
+          docker push $ECR_REGISTRY/ecommerce-cart:latest
+
+      # 🔹 Build & Push Order
+      - name: Build & Push Order
+        run: |
+          docker build -t ecommerce-order .
+          docker tag ecommerce-order:latest $ECR_REGISTRY/ecommerce-order:latest
+          docker push $ECR_REGISTRY/ecommerce-order:latest
+
+      # 🔹 Build & Push Product
+      - name: Build & Push Product
+        run: |
+          docker build -t ecommerce-product .
+          docker tag ecommerce-product:latest $ECR_REGISTRY/ecommerce-product:latest
+          docker push $ECR_REGISTRY/ecommerce-product:latest
+
+      # 🔹 Build & Push Frontend
+      - name: Build & Push Frontend
+        run: |
+          docker build -t ecommerce-frontend .
+          docker tag ecommerce-frontend:latest $ECR_REGISTRY/ecommerce-frontend:latest
+          docker push $ECR_REGISTRY/ecommerce-frontend:latest
+
+      # 🔹 Deploy to EC2 (your k8s-staging)
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu/github/ecommerce-app-nodejs
+            kubectl rollout restart deployment backend-cart-deployment -n ecommerce
+            kubectl rollout restart deployment backend-order-deployment -n ecommerce
+            kubectl rollout restart deployment backend-product-deployment -n ecommerce
+            kubectl rollout restart deployment ecommerce-frontend-deployment -n ecommerce
