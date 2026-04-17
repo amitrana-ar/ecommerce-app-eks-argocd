@@ -30,12 +30,22 @@ form {
   padding: 0 1.5rem;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .main-header__nav {
   height: 100%;
   display: none;
   align-items: center;
+}
+
+.main-header__title {
+  color: #ffeb3b;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .main-header__item-list {
