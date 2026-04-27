@@ -3,6 +3,6 @@ npm-debug.log
 *.md
 .env
 .gitignore
-Dockerfile
+#Dockerfile
 docker-compose.yml
 README.md
