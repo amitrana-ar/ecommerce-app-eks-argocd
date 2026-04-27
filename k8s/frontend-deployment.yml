@@ -18,7 +18,7 @@ spec:
         - name: ecr-secret
       containers:
         - name: ecommerce-frontend
-          image: <aws-account-id>.dkr.ecr.us-east-1.amazonaws.com/ecommerce-frontend:latest
+          image: <aws-account-id>.dkr.ecr.us-east-1.amazonaws.com/ecommerce-frontend:<commit-sha>
           command: ["npm", "run", "start:frontend"]
           ports:
             - containerPort: 5000          
