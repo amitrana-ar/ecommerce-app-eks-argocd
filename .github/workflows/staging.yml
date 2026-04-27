@@ -26,16 +26,19 @@ jobs:
           aws ecr get-login-password --region $AWS_REGION \
           | docker login --username AWS --password-stdin $ECR_REGISTRY
 
+      - name: Set image tag
+        run: echo "TAG=${GITHUB_SHA}" >> $GITHUB_ENV
+
       - name: Build & Push Images
         run: |
-          docker build -t $ECR_REGISTRY/ecommerce-cart:latest .
-          docker push $ECR_REGISTRY/ecommerce-cart:latest
+          docker build -t $ECR_REGISTRY/ecommerce-cart:$TAG .
+          docker push $ECR_REGISTRY/ecommerce-cart:$TAG
 
-          docker build -t $ECR_REGISTRY/ecommerce-order:latest .
-          docker push $ECR_REGISTRY/ecommerce-order:latest
+          docker build -t $ECR_REGISTRY/ecommerce-order:$TAG .
+          docker push $ECR_REGISTRY/ecommerce-order:$TAG 
 
-          docker build -t $ECR_REGISTRY/ecommerce-product:latest .
-          docker push $ECR_REGISTRY/ecommerce-product:latest
+          docker build -t $ECR_REGISTRY/ecommerce-product:$TAG .
+          docker push $ECR_REGISTRY/ecommerce-product:$TAG  
 
-          docker build -t $ECR_REGISTRY/ecommerce-frontend:latest .
-          docker push $ECR_REGISTRY/ecommerce-frontend:latest
+          docker build -t $ECR_REGISTRY/ecommerce-frontend:$TAG .
+          docker push $ECR_REGISTRY/ecommerce-frontend:$TAG
