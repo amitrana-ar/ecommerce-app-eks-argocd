@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ecommerce-ingress-argocd
+  labels:
+    app.kubernetes.io/name: ecommerce-ingress-argocd
+    namespace: argocd
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: nginx
+  tls:    
+  - hosts:
+    - argocd.artechworld.info
+    secretName: argocd-tls
+  rules:
+  - host: argocd.artechworld.info
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: argocd-server
+            port: 
+              number: 443
