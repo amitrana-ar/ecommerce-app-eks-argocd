@@ -2,6 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: ecommerce-backend-order-service
+  namespace: ecommerce
   labels:
     app: backend-order
 spec:

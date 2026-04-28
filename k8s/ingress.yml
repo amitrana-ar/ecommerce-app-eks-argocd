@@ -2,6 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ecommerce-ingress
+  namespace: ecommerce
   labels:
     app.kubernetes.io/name: ecommerce-ingress
   annotations:

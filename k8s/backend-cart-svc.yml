@@ -2,6 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: ecommerce-backend-cart-service
+  namespace: ecommerce
   labels:
     app: backend-cart
 spec:
