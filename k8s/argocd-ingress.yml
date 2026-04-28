@@ -13,8 +13,8 @@ spec:
         - argocd.artechworld.info
       secretName: argocd-tls
   rules:
-    - host: argocd.artechworld.info
-      http:
+    #- host: argocd.artechworld.info
+    - http:
         paths:
           - path: /
             pathType: Prefix
