@@ -2,6 +2,8 @@
 
 This is an e-commerce store application built using Node.js, Express.js, and EJS. The application follows the MVC (Model-View-Controller) architecture and integrates RESTful APIs for efficient data handling. The application features dynamic routing, robust database interactions through Sequelize ORM, role-based user authentication, admin-driven product management, and customer-focused shopping cart functionalities.
 
+![Alt text](Argocd-EKS-Diagram.png)
+
 # 🚀 E-Commerce Microservices Deployment (EKS + GitOps)
 
 ## 📌 Overview
