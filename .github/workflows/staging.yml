@@ -5,8 +5,8 @@ on:
     branches: [ main ]
 
 env:
-  AWS_REGION: us-east-1
-  ECR_REGISTRY: <aws-account-id>.dkr.ecr.us-east-1.amazonaws.com
+  AWS_REGION: ap-south-1
+  ECR_REGISTRY: <aws-account-id>.dkr.ecr.ap-south-1.amazonaws.com
 
 jobs:
   build:
