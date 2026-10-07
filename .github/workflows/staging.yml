@@ -47,10 +47,14 @@ jobs:
       #🔥 Update YAML (KEY STEP)
       - name: Update Deployment YAML
         run: |
-          sed -i "s|ecommerce-frontend:.*|ecommerce-frontend:$TAG|" k8s/frontend-deployment.yml
-          sed -i "s|ecommerce-cart:.*|ecommerce-cart:$TAG|" k8s/backend-cart-deployment.yml
-          sed -i "s|ecommerce-order:.*|ecommerce-order:$TAG|" k8s/backend-order-deployment.yml
-          sed -i "s|ecommerce-product:.*|ecommerce-product:$TAG|" k8s/backend-product-deployment.yml
+          # sed -i "s|ecommerce-frontend:.*|ecommerce-frontend:$TAG|" k8s/frontend-deployment.yml
+          # sed -i "s|ecommerce-cart:.*|ecommerce-cart:$TAG|" k8s/backend-cart-deployment.yml
+          # sed -i "s|ecommerce-order:.*|ecommerce-order:$TAG|" k8s/backend-order-deployment.yml
+          # sed -i "s|ecommerce-product:.*|ecommerce-product:$TAG|" k8s/backend-product-deployment.yml
+          sed -i "s|image:.*ecommerce-frontend.*|image: $ECR_REGISTRY/ecommerce-frontend:$TAG|" k8s/frontend-deployment.yml                    
+          sed -i "s|image:.*ecommerce-cart.*|image: $ECR_REGISTRY/ecommerce-cart:$TAG|" k8s/backend-cart-deployment.yml                        
+          sed -i "s|image:.*ecommerce-order.*|image: $ECR_REGISTRY/ecommerce-order:$TAG|" k8s/backend-order-deployment.yml                     
+          sed -i "s|image:.*ecommerce-product.*|image: $ECR_REGISTRY/ecommerce-product:$TAG|" k8s/backend-product-deployment.yml
 
       - name: Commit & Push
         run: |
