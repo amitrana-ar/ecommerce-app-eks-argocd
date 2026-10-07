@@ -1,7 +1,7 @@
 node_modules
 npm-debug.log
 *.md
-.env
+#.env
 .gitignore
 #Dockerfile
 docker-compose.yml
